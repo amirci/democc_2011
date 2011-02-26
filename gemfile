@@ -1,0 +1,28 @@
+source :rubygems
+
+group :setup do
+	gem 'albacore'
+	gem 'git'
+	gem 'noodle'
+end
+
+group :testing do
+	gem 'capybara'
+	gem 'cucumber'
+	gem 'rspec'
+	gem 'sqlite3'
+end
+
+group :dev do
+    gem 'sharptestsex'
+	gem 'gallio', '~> 3.2'
+	gem 'rhino.mocks',  '~> 3.6'
+	gem 'structuremap.automocking', '~> 2.6.1.1'
+	gem 'maventhought.testing'
+	gem 'maventhought.commons'
+end
+
+group :runtime do
+	#so far all the version are from lib2
+end
+
