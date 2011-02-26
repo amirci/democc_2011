@@ -43,6 +43,5 @@ namespace MavenThought.MediaLibrary.WebClient.Tests.Helpers
 
             this.Helper = new HtmlHelper(viewContext, Mock<IViewDataContainer>());
         }
-
     }
 }

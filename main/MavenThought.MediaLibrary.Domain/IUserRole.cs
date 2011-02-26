@@ -5,6 +5,5 @@ namespace MavenThought.MediaLibrary.Domain
     /// </summary>
     public interface IUserRole
     {
-        
     }
 }

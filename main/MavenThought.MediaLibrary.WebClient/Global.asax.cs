@@ -31,9 +31,7 @@ namespace MavenThought.MediaLibrary.WebClient
             routes.MapRoute(
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
-                new { controller = "Movies", action = "Index", id = "" }  // Parameter defaults
-            );
-
+                new { controller = "Movies", action = "Index", id = string.Empty }); // Parameter defaults
         }
 
         /// <summary>

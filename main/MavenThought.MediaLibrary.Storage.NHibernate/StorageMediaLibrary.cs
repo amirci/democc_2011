@@ -43,15 +43,6 @@ namespace MavenThought.MediaLibrary.Storage.NHibernate
         }
 
         /// <summary>
-        /// Adds a new element to the library
-        /// </summary>
-        /// <param name="element">New media element to add to the library</param>
-        public void Add(IMovie element)
-        {
-            this._factory.SaveOrUpdate(element);
-        }
-
-        /// <summary>
         /// Gets the collection of media
         /// </summary>
         public IEnumerable<IMovie> Contents
@@ -63,6 +54,15 @@ namespace MavenThought.MediaLibrary.Storage.NHibernate
 
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Adds a new element to the library
+        /// </summary>
+        /// <param name="element">New media element to add to the library</param>
+        public void Add(IMovie element)
+        {
+            this._factory.SaveOrUpdate(element);
         }
 
         /// <summary>

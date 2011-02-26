@@ -16,6 +16,5 @@ namespace MavenThought.MediaLibrary.Domain
         /// The release date of the media
         /// </summary>
         DateTime? ReleaseDate { get; set; }
-
     }
 }

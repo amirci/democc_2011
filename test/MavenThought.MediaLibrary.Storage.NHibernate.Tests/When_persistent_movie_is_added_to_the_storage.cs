@@ -16,6 +16,7 @@ namespace MavenThought.MediaLibrary.Storage.NHibernate.Tests
         /// Object to store
         /// </summary>
         private Movie _movie;
+
         /// <summary>
         /// Actual collection obtained
         /// </summary>

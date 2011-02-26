@@ -45,18 +45,35 @@ end
 desc "Run all tests"
 task :test => ["test:all"]
 
-namespace :test do
-	
+namespace :test do	
 	desc 'Run all tests'
 	task :all => [:default] do 
 		tests = FileList["test/**/bin/debug/**/*.Tests.dll"].join " "
 		system "./tools/gallio/bin/gallio.echo.exe #{tests}"
 	end
-
 end
 
-desc "Commit"
-task :commit => [:test] do
+desc "Builds, tests and then commits with SVN dialog"
+task :commit => ["tools:stylecop", :test] do
 	sh '"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe" /command:commit /path:"." /notempfile'
 end
+
+require 'rexml/document'
+include REXML
+
+namespace :tools do
+	desc "Runs stylecop and generates a report on the Output folder"
+	task :stylecop do
+		mkdir "Output" unless File.directory? "Output"
+		stylecop = "tools/stylecopcmd/StyleCopCmd"
+		# Run the StyleCopCmd from tools
+		sh "#{stylecop} -sf #{solution_file} -ifp AssemblyInfo.cs -of output/stylecop.xml -sc Settings.StyleCop -tf tools/StyleCopCmd/StyleCopReport.xsl"
+		sh "tools/Xslt/msxsl.exe Output/stylecop.violations.xml tools/stylecopcmd/ViolationsReport.xsl -o Output/StyleCop.Violations.html"
+
+		xmldoc = Document.new(File.new("Output/stylecop.violations.xml"))
+		violations = XPath.first(xmldoc, "/StyleCopViolations/Violation")
+		abort "Stylecop Failed! Please check output\stylecop.violations.html!" unless violations.nil?
+	end
+end
+
 

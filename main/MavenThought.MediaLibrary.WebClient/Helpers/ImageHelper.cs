@@ -58,7 +58,7 @@ namespace MavenThought.MediaLibrary.WebClient.Helpers
         /// <returns>The string with the tag</returns>
         public static string Image(this HtmlHelper helper, string url)
         {
-            return Image(helper, "", url, "image");
+            return Image(helper, string.Empty, url, "image");
         }
 
         /// <summary>

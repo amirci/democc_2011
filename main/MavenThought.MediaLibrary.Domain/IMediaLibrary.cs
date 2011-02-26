@@ -8,15 +8,15 @@ namespace MavenThought.MediaLibrary.Domain
     public interface IMediaLibrary
     {
         /// <summary>
+        /// Gets the collection of media
+        /// </summary>
+        IEnumerable<IMovie> Contents { get; }
+
+        /// <summary>
         /// Adds a new element to the library
         /// </summary>
         /// <param name="element">New media element to add to the library</param>
         void Add(IMovie element);
-
-        /// <summary>
-        /// Gets the collection of media
-        /// </summary>
-        IEnumerable<IMovie> Contents { get; }
 
         /// <summary>
         /// Clears the contents of the library

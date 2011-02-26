@@ -15,6 +15,5 @@ namespace MavenThought.MediaLibrary.WebClient.Controllers
         {
             return View();
         }
-
     }
 }
