@@ -2,6 +2,7 @@ require 'rubygems'
 
 require 'albacore'
 require 'rake/clean'
+require 'noodle'
 
 include FileUtils
 
@@ -15,6 +16,18 @@ CLOBBER.include("**/_*", "lib/*", "**/*.user", "**/*.cache", "**/*.suo")
 
 desc 'Default build'
 task :default => ["build:all"]
+
+desc 'Setup requirements to build and deploy'
+task :setup => ["setup:dep:local"]
+
+namespace :setup do
+	namespace :dep do
+		Noodle::Rake::NoodleTask.new :local do |n|
+			n.groups << :runtime
+			n.groups << :dev
+		end
+	end
+end
 
 namespace :build do
 
