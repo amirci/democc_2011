@@ -42,3 +42,20 @@ namespace :build do
 	task :re => ["clean", "build:all"]
 end
 
+desc "Run all tests"
+task :test => ["test:all"]
+
+namespace :test do
+	
+	desc 'Run all tests'
+	task :all => [:default] do 
+		tests = FileList["test/**/bin/debug/**/*.Tests.dll"].join " "
+		system "./tools/gallio/bin/gallio.echo.exe #{tests}"
+	end
+
+	desc 'Run all features'
+	task :features => [:default] do
+	end
+end
+
+
