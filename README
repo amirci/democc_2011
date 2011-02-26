@@ -14,7 +14,7 @@ Folder structure of the project:
 		+-- test: Test project files included in the solution
 		+-- features: Features used by Capybara + Cucumber
 		+-- lib2: Dependencies used by the projects that can't be installed with bundler
-		+-- tools: Tools used to run tests, msbuild tasks, etc.
+		+-- tools: Tools used to run tests, xslt, etc.
 		
 
 If you are not familiar with BDD please read my post with the introduction to the BDD at http://orthocoders.com/2010/05/26/real-world-bdd-introduction.
