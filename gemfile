@@ -1,8 +1,7 @@
 source :rubygems
 
-group :setup do
+group :base do
 	gem 'albacore'
-	gem 'git'
 	gem 'noodle'
 end
 

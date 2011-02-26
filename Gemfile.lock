@@ -31,7 +31,6 @@ GEM
     gallio (3.2.601)
     gherkin (2.3.3-x86-mingw32)
       json (~> 1.4.6)
-    git (1.2.5)
     json (1.4.6-x86-mingw32)
     json_pure (1.5.1)
     maventhought.commons (0.3.0)
@@ -83,7 +82,6 @@ DEPENDENCIES
   capybara
   cucumber
   gallio (~> 3.2)
-  git
   maventhought.commons
   maventhought.testing
   noodle
