@@ -53,9 +53,10 @@ namespace :test do
 		system "./tools/gallio/bin/gallio.echo.exe #{tests}"
 	end
 
-	desc 'Run all features'
-	task :features => [:default] do
-	end
 end
 
+desc "Commit"
+task :commit => [:test] do
+	sh '"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe" /command:commit /path:"." /notempfile'
+end
 
