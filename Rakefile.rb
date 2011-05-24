@@ -11,6 +11,9 @@ include FileUtils
 solution_file = FileList["*.sln"].first
 build_file = FileList["*.msbuild"].first
 project_name = "MavenThought.MovieLibrary"
+commit = Git.open(".").log.first.sha[0..10] rescue 'na'
+version = IO.readlines('VERSION')[0] rescue "0.0.0.0"
+
 
 CLEAN.include("main/**/bin", "main/**/obj", "test/**/obj", "test/**/bin")
 
@@ -87,36 +90,14 @@ task :deploy => ["deploy:all"]
 
 namespace :deploy do
 		
-	commit = Git.open(".").log.first.sha[0..10] rescue 'na'
-	version = IO.readlines('VERSION')[0] rescue "0.0.0.0"
+	deploy_folder = "c:/temp/build/#{project_name}.#{version}_#{commit}"
 
-	deploy_folder = "c:/temp/build/#{project_name}.#{version}"
-
-	task :all  => [:update_version] do
+	task :all  => ["util:update_version"] do
 		rm_rf(deploy_folder)
 		Dir.mkdir(deploy_folder) unless File.directory? deploy_folder
 		Rake::Task["build:all"].invoke(:Release)
 		Rake::Task["deploy:package"].invoke
 	end 
-	
-	task :update_version do 
-		files = FileList["main/**/Properties/AssemblyInfo.cs"]
-		ass = Rake::Task["deploy:assemblyinfo"]
-		files.each do |file| 
-			ass.invoke(file) 
-			ass.reenable
-		end
-	end
-	
-	assemblyinfo :assemblyinfo, :file do |asm, args|
-		asm.version = version
-		asm.company_name = "MavenThought Inc."
-		asm.product_name = "MavenThought MovieLibrary"
-		asm.title = "MavenThought Library Demo"
-		asm.description = "Demo done for Winnipeg CodeCamp 2011"
-		asm.copyright = "MavenThought Inc. 2011"
-		asm.output_file = args[:file]
-	end	
 	
 	zip :package do |zip|
 		Dir.mkdir(deploy_folder) unless File.directory? deploy_folder

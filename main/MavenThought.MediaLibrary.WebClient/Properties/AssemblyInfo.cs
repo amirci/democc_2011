@@ -1,6 +1,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
-[assembly: AssemblyTitle("Media Library Demo - Web application")]
-[assembly: AssemblyDescription("Demo to show automation concepts 2011")]
+[assembly: AssemblyTitle("MavenThought Library Demo")]
+[assembly: AssemblyDescription("Demo done for Winnipeg CodeCamp 2011")]
 
 
