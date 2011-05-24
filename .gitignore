@@ -11,3 +11,4 @@ _ReSharper.*
 .svn
 lib
 packages
+*.docstates
