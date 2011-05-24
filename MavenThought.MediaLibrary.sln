@@ -3,7 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BD744581-CAA3-4190-8142-120AF23E9C41}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{D082D8D2-B98B-495F-8AF5-ED8BBA0D701D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Global", "Global", "{D082D8D2-B98B-495F-8AF5-ED8BBA0D701D}"
+	ProjectSection(SolutionItems) = preProject
+		main\GlobalAssemblyInfo.cs = main\GlobalAssemblyInfo.cs
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MavenThought.MediaLibrary.Domain", "main\MavenThought.MediaLibrary.Domain\MavenThought.MediaLibrary.Domain.csproj", "{B0460A37-24B0-4826-8BB7-AFFDA8A40B0F}"
 EndProject

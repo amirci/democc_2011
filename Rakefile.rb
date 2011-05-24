@@ -20,7 +20,7 @@ desc 'Default build'
 task :default => ["setup", "build:all"]
 
 desc 'Setup requirements to build and deploy'
-task :setup => ["setup:dep"]
+task :setup => ["setup:os"]
 
 namespace :setup do
 	desc "Setup dependencies for nuget packages"
@@ -29,10 +29,14 @@ namespace :setup do
 			sh "nuget install #{file} /OutputDirectory Packages"
 		end
 	end
+	
+	desc "Setup dependencies for this OS (x86/x64)"
+	task :os => ["setup:dep"] do
+		setup_os
+	end
 end
 
 namespace :build  do
-
 	desc "Build the project"
 	msbuild :all, :config do |msb, args|
 		msb.properties :configuration => args[:config] || :Debug
@@ -122,4 +126,33 @@ namespace :deploy do
 		zip.output_file = zip_file
 		zip.output_path = deploy_folder
 	end
+end
+
+namespace :util do
+	task :clean_folder, :folder do |t, args|
+		rm_rf(args.folder)
+		Dir.mkdir(args.folder) unless File.directory? args.folder
+	end
+		
+	assemblyinfo :update_version do |asm|
+		asm.version = version
+		asm.file_version = version
+		asm.product_name = "MovieLibrary Demo (sha #{commit})"
+		asm.output_file = "main/GlobalAssemblyInfo.cs"
+		asm.copyright = "MavenThought Inc - 2011"
+		asm.trademark = commit
+	end	
+
+	task :pre_publish, :config do |t, args|
+		Rake::Task["build:all"].invoke(args.config)
+		Rake::Task["test"].invoke
+	end
+end
+
+def setup_os(target = nil)
+	target ||= File.exist?('c:\Program Files (x86)') ? 64 : 32
+	puts "**** Setting up OS #{target} bits"
+	files = FileList["Packages/SQLitex64.1.0.66/lib/#{target}/*.dll"].first
+	puts "**** Using #{files}"
+	FileUtils.cp(files, "Packages/SQLitex64.1.0.66/lib/")
 end
