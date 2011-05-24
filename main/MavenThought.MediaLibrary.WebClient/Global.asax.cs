@@ -56,7 +56,6 @@ namespace MavenThought.MediaLibrary.WebClient
             this.Container.Register(
                 Component.For<IControllerFactory>().ImplementedBy<WindsorControllerFactory>(),
                 Component.For<IWindsorContainer>().Instance(this.Container));
-
         }
     }
 }
