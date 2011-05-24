@@ -77,3 +77,49 @@ namespace :tools do
 		abort "Stylecop Failed! Please check output\\stylecop.violations.html!" unless violations.nil?
 	end
 end
+
+desc "Updates build version and generates zip"
+task :deploy => ["deploy:all"]
+
+namespace :deploy do
+		
+	commit = Git.open(".").log.first.sha[0..10] rescue 'na'
+	version = IO.readlines('VERSION')[0] rescue "0.0.0.0"
+
+	deploy_folder = "c:/temp/build/#{project_name}.#{version}"
+
+	task :all  => [:update_version] do
+		rm_rf(deploy_folder)
+		Dir.mkdir(deploy_folder) unless File.directory? deploy_folder
+		Rake::Task["build:all"].invoke(:Release)
+		Rake::Task["deploy:package"].invoke
+	end 
+	
+	task :update_version do 
+		files = FileList["main/**/Properties/AssemblyInfo.cs"]
+		ass = Rake::Task["deploy:assemblyinfo"]
+		files.each do |file| 
+			ass.invoke(file) 
+			ass.reenable
+		end
+	end
+	
+	assemblyinfo :assemblyinfo, :file do |asm, args|
+		asm.version = version
+		asm.company_name = "MavenThought Inc."
+		asm.product_name = "MavenThought MovieLibrary"
+		asm.title = "MavenThought Library Demo"
+		asm.description = "Demo done for Winnipeg CodeCamp 2011"
+		asm.copyright = "MavenThought Inc. 2011"
+		asm.output_file = args[:file]
+	end	
+	
+	zip :package do |zip|
+		Dir.mkdir(deploy_folder) unless File.directory? deploy_folder
+		zip_file = "#{project_name}.#{version}.zip"
+		puts "Creating zip file #{zip_file} in #{deploy_folder}"
+		zip.directories_to_zip "main/MavenThought.MediaLibrary.WebClient/bin"
+		zip.output_file = zip_file
+		zip.output_path = deploy_folder
+	end
+end

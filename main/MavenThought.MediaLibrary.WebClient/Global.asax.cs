@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Component = Castle.MicroKernel.Registration.Component;
 
@@ -55,8 +56,11 @@ namespace MavenThought.MediaLibrary.WebClient
 
             this.Container.Register(
                 Component.For<IControllerFactory>().ImplementedBy<WindsorControllerFactory>(),
-                Component.For<IWindsorContainer>().Instance(this.Container));
-
+                Component.For<IWindsorContainer>().Instance(this.Container),
+                AllTypes
+                    .FromThisAssembly()
+                    .BasedOn<Controller>()
+                    .Configure(reg => reg.LifeStyle.Transient));
         }
     }
 }
