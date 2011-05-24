@@ -3,6 +3,8 @@ require 'rubygems'
 require 'albacore'
 require 'rake/clean'
 require 'noodle'
+require 'git'
+
 
 include FileUtils
 
@@ -18,11 +20,14 @@ desc 'Default build'
 task :default => ["setup", "build:all"]
 
 desc 'Setup requirements to build and deploy'
-task :setup => ["setup:local"]
+task :setup => ["setup:dep"]
 
 namespace :setup do
-	Noodle::Rake::NoodleTask.new :local do |n|
-		n.groups << :dev
+	desc "Setup dependencies for nuget packages"
+	task :dep do
+		FileList["**/packages.config"].each do |file|
+			sh "nuget install #{file} /OutputDirectory Packages"
+		end
 	end
 end
 
@@ -51,8 +56,8 @@ namespace :test do
 end
 
 desc "Builds, tests and then commits with SVN dialog"
-task :commit => ["tools:stylecop", :test] do
-	sh '"C:\Program Files\TortoiseSVN\bin\TortoiseProc.exe" /command:commit /path:"." /notempfile'
+task :push => ["tools:stylecop", :test] do
+	sh "git push origin master"
 end
 
 namespace :tools do
@@ -68,7 +73,7 @@ namespace :tools do
 
 		xmldoc = REXML::Document.new(File.new("Output/stylecop.violations.xml"))
 		violations = REXML::XPath.first(xmldoc, "/StyleCopViolations/Violation")
-		abort "Stylecop Failed! Please check output\stylecop.violations.html!" unless violations.nil?
+		abort "Stylecop Failed! Please check output\\stylecop.violations.html!" unless violations.nil?
 	end
 end
 
@@ -77,9 +82,8 @@ task :deploy => ["deploy:all"]
 
 namespace :deploy do
 		
-	svnrevision = `tools/svn/svnversion`.match('\d+:(\d+).*')[1] rescue '0'
-
-	version = "1.1.0.#{svnrevision}"
+	commit = Git.open(".").log.first.sha[0..10] rescue 'na'
+	version = IO.readlines('VERSION')[0] rescue "0.0.0.0"
 
 	deploy_folder = "c:/temp/build/#{project_name}.#{version}"
 

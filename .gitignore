@@ -10,3 +10,4 @@ _ReSharper.*
 *.xml
 .svn
 lib
+packages

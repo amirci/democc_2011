@@ -1,9 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
-using MvcContrib.Castle;
-using NHaml.Web.Mvc;
-using Rhino.Commons.Binsor;
 using Component = Castle.MicroKernel.Registration.Component;
 
 namespace MavenThought.MediaLibrary.WebClient
@@ -40,16 +37,11 @@ namespace MavenThought.MediaLibrary.WebClient
         protected void Application_Start()
         {
             // Add nhaml engine
-            ViewEngines.Engines.Add(new NHamlMvcViewEngine());
+           // ViewEngines.Engines.Add(new NHamlMvcViewEngine());
 
             // Setup IoC container
             this.SetupContainer();
 
-            // Register the factory for the controllers
-            ControllerBuilder
-                .Current
-                .SetControllerFactory(new WindsorControllerFactory(this.Container));
-            
             // Register the routes
             RegisterRoutes(RouteTable.Routes);
         }
@@ -61,9 +53,10 @@ namespace MavenThought.MediaLibrary.WebClient
         {
             this.Container = new WindsorContainer();
 
-            this.Container.Register(Component.For<IWindsorContainer>().Instance(this.Container));
+            this.Container.Register(
+                Component.For<IControllerFactory>().ImplementedBy<WindsorControllerFactory>(),
+                Component.For<IWindsorContainer>().Instance(this.Container));
 
-            BooReader.Read(this.Container, "Global.boo");
         }
     }
 }

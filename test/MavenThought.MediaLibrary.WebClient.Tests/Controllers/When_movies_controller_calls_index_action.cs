@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using MavenThought.Commons.Extensions;
 using MavenThought.MediaLibrary.Domain;
 using MbUnit.Framework;
-using MvcContrib.TestHelper;
 using MavenThought.Commons.Testing;
+using MvcContrib.TestHelper;
 using Rhino.Mocks;
 using SharpTestsEx;
 
